@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hasil Prediksi BMI</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background: linear-gradient(to bottom right, #4facfe, #00f2fe);
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+      .container {
+        max-width: 900px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        color: #333;
+      }
+      .container h1 {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 700;
+      }
+      .btn-primary {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        border: none;
+        padding: 12px 25px;
+        font-size: 18px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(to right, #00f2fe, #4facfe);
+        box-shadow: 0 5px 20px rgba(79, 172, 254, 0.5);
+      }
+      .result-section {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      .result-section h4 {
+        color: #4facfe;
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><i class="fas fa-chart-bar"></i> Hasil Prediksi BMI</h1>
+
+      <div class="result-section">
+        <h4 class="text-center">{{ prediction }}</h4>
+        <h4>Kategori BMI: {{ bmi_category }}</h4>
+      </div>
+
+      <div class="result-section">
+        <h4>Rekomendasi BMI:</h4>
+        <ul>
+          {% for rec in bmi_recommendations %}
+          <li>{{ rec }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="result-section">
+        <h4>Rekomendasi Latihan:</h4>
+        <ul>
+          {% for rec in workout_recommendations %}
+          <li>{{ rec }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="result-section">
+        <h4>Insight Kesehatan:</h4>
+        <ul>
+          <li>Status Detak Jantung: {{ health_insights.heart_rate_status }}</li>
+          <li>Status Hidrasi: {{ health_insights.hydration_status }}</li>
+          <li>
+            Konsistensi Latihan: {{ health_insights.workout_consistency }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="{{ url_for('home') }}" class="btn btn-primary">
+          <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

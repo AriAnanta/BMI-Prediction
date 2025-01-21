@@ -4,13 +4,13 @@ import numpy as np
 
 app = Flask(__name__)
 
-# Load semua model dan transformer
+# Load semua model dan model scalernya
 with open('linear_model.pkl', 'rb') as f:
     model = pickle.load(f)
 with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
-# Mapping untuk kategori
+# Mapping untuk features yang kaetegori
 gender_mapping = {'Female': 0, 'Male': 1}
 workout_mapping = {'Yoga': 0, 'HIIT': 1, 'Cardio': 2, 'Strength': 3}
 
@@ -79,13 +79,13 @@ def predict():
         if request.is_json:
             data = request.get_json()
         else:
-            # Ambil data dari form
+            # Ambil data dari form di index.html
             data = {
-              'Age': float(request.form['Age']),
+                'Age': float(request.form['Age']),
                 'Gender': request.form['Gender'],
                 'Weight': float(request.form['Weight']),
                 'Height': float(request.form['Height']),
-              'Max_BPM': float(request.form['Max_BPM']),
+                'Max_BPM': float(request.form['Max_BPM']),
                 'Avg_BPM': float(request.form['Avg_BPM']),
                 'Resting_BPM': float(request.form['Resting_BPM']),
                 'Session_Duration': float(request.form['Session_Duration']),
@@ -94,14 +94,14 @@ def predict():
                 'Fat_Percentage': float(request.form['Fat_Percentage']),
                 'Water_Intake': float(request.form['Water_Intake']),
                 'Workout_Frequency': float(request.form['Workout_Frequency']),
-              'Experience_Level': float(request.form['Experience_Level'])
+                'Experience_Level': float(request.form['Experience_Level'])
             }
         
-        # Encode categorical variables menggunakan mapping
+        # Encode categorical variables menggunakan mapping yang sudah di set diatas
         gender_encoded = gender_mapping[data['Gender']]
         workout_encoded = workout_mapping[data['Workout_Type']]
        
-        # Prepare features for scaling
+        # Lakukan scaling pada data features
         features = np.array([
             data['Age'],
             gender_encoded,
@@ -119,7 +119,7 @@ def predict():
             data['Experience_Level']
         ]).reshape(1, -1)
 
-        # Standarisasi datanya dulu
+        # Lakukan standarisasi pada data features
         features_scaled = scaler.transform(features)
         
         # Prediksi BMI nya 
@@ -150,13 +150,12 @@ def predict():
                 'health_insights': health_insights
             })
         else:
-            return render_template('index.html', 
-                                 prediction=f'Predicted BMI: {predicted_bmi:.2f}',
-                                 bmi_category=bmi_category,
-                                 bmi_recommendations=bmi_recommendations,
-                                 workout_recommendations=workout_recommendations,
-                                 health_insights=health_insights,
-                                 input_data=data)
+            return render_template('result.html', 
+                                prediction=f'Predicted BMI: {predicted_bmi:.2f}',
+                                bmi_category=bmi_category,
+                                bmi_recommendations=bmi_recommendations,
+                                workout_recommendations=workout_recommendations,
+                                health_insights=health_insights)
 
     except Exception as e:
         if request.is_json:
@@ -165,7 +164,7 @@ def predict():
                 'message': str(e)
             })
         else:
-            return render_template('index.html', error=str(e))
+            return render_template('error.html', error=str(e))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True) 
