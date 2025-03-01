@@ -8,13 +8,19 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
-# Copy model, app, dan isi direktori templates nya
+# Copy semua file aplikasi yang diperlukan
 COPY app.py .
 COPY linear_model.pkl .
 COPY scaler.pkl .
 COPY templates templates/
+COPY static static/
 
 # Expose port
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"] 
+# Tetapkan variabel lingkungan
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Jalankan gunicorn dengan 4 worker
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "app:app"] 

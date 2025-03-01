@@ -16,11 +16,10 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/health-calculator.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/animations.js') }}"></script>
+    <!-- Import file charts.js -->
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
     <style>
       :root {
         --primary-color: #4facfe;
@@ -449,15 +448,15 @@
         <li class="nav-item" role="presentation">
           <button
             class="nav-link"
-            id="health-insights-tab"
+            id="charts-tab"
             data-bs-toggle="pill"
-            data-bs-target="#health-insights"
+            data-bs-target="#charts"
             type="button"
             role="tab"
-            aria-controls="health-insights"
+            aria-controls="charts"
             aria-selected="false"
           >
-            <i class="fas fa-heartbeat me-2"></i> Insight Kesehatan Lanjutan
+            <i class="fas fa-chart-line me-2"></i> Grafik Detail
           </button>
         </li>
       </ul>
@@ -623,28 +622,25 @@
                   <p>
                     Berdasarkan kebutuhan kalori harian Anda sekitar
                     <strong
-                      >{{ additional_stats.daily_calories_need|int }}
+                      >{{ visualization_data.macronutrients.total }}
                       kcal</strong
                     >, berikut distribusi makronutrien yang direkomendasikan:
                   </p>
                   <ul>
                     <li>
-                      <strong>Protein (25%):</strong>
-                      {{ (additional_stats.daily_calories_need * 0.25)|int }}
-                      kcal ({{ (additional_stats.daily_calories_need * 0.25 /
-                      4)|int }} gram)
+                      <strong>Protein:</strong> {{
+                      visualization_data.macronutrients.protein }} kcal ({{
+                      visualization_data.macronutrients.protein_grams }} gram)
                     </li>
                     <li>
-                      <strong>Karbohidrat (50%):</strong>
-                      {{ (additional_stats.daily_calories_need * 0.5)|int }}
-                      kcal ({{ (additional_stats.daily_calories_need * 0.5 /
-                      4)|int }} gram)
+                      <strong>Karbohidrat:</strong> {{
+                      visualization_data.macronutrients.carbs }} kcal ({{
+                      visualization_data.macronutrients.carbs_grams }} gram)
                     </li>
                     <li>
-                      <strong>Lemak (25%):</strong>
-                      {{ (additional_stats.daily_calories_need * 0.25)|int }}
-                      kcal ({{ (additional_stats.daily_calories_need * 0.25 /
-                      9)|int }} gram)
+                      <strong>Lemak:</strong> {{
+                      visualization_data.macronutrients.fat }} kcal ({{
+                      visualization_data.macronutrients.fat_grams }} gram)
                     </li>
                   </ul>
                 </div>
@@ -700,216 +696,39 @@
           </div>
         </div>
 
-        <!-- Tab Insight Kesehatan Lanjutan (menggantikan tab Grafik Detail) -->
+        <!-- Tab Grafik Detail -->
         <div
           class="tab-pane fade"
-          id="health-insights"
+          id="charts"
           role="tabpanel"
-          aria-labelledby="health-insights-tab"
+          aria-labelledby="charts-tab"
         >
-          <div class="result-section">
-            <h4>
-              <i class="fas fa-heart"></i> Analisis Kesehatan Kardiovaskular
-            </h4>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="stat-card">
-                  <div class="stat-card-title">Detak Jantung Istirahat</div>
-                  <div class="stat-card-value">
-                    {{ user_data.Resting_BPM }} BPM
-                  </div>
-                  <div class="stat-card-desc">
-                    {% if user_data.Resting_BPM < 60 %} Rendah - Bisa
-                    menunjukkan kebugaran kardiovaskular yang baik {% elif
-                    user_data.Resting_BPM <= 100 %} Normal - Dalam rentang sehat
-                    {% else %} Tinggi - Pertimbangkan untuk konsultasi dengan
-                    dokter {% endif %}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="stat-card">
-                  <div class="stat-card-title">Zona Latihan Optimal</div>
-                  <div class="stat-card-value">
-                    {{ health_insights.target_hr_zone }}
-                  </div>
-                  <div class="stat-card-desc">
-                    Berlatih dalam zona ini memberikan manfaat kardiovaskular
-                    yang optimal
-                  </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="result-section">
+                <h4><i class="fas fa-heartbeat"></i> Analisis Detak Jantung</h4>
+                <div class="chart-container">
+                  <canvas id="heartRateChart"></canvas>
                 </div>
               </div>
             </div>
-            <div class="mt-4">
-              <h5>Rekomendasi Kardiovaskular</h5>
-              <ul>
-                <li>
-                  Lakukan latihan kardio setidaknya 150 menit per minggu dengan
-                  intensitas sedang
-                </li>
-                <li>
-                  Pantau detak jantung Anda selama latihan untuk memastikan
-                  berada dalam zona optimal
-                </li>
-                <li>
-                  Prioritaskan latihan yang meningkatkan kapasitas
-                  kardiovaskular seperti berenang, bersepeda, atau lari
-                </li>
-                <li>
-                  Jaga konsistensi latihan untuk mempertahankan kebugaran
-                  jantung
-                </li>
-              </ul>
+            <div class="col-md-6">
+              <div class="result-section">
+                <h4><i class="fas fa-fire"></i> Analisis Pembakaran Kalori</h4>
+                <div class="chart-container">
+                  <canvas id="caloriesChart"></canvas>
+                </div>
+                <div class="mt-3 small text-muted">
+                  Berdasarkan data Anda, pembakaran kalori selama latihan adalah
+                  {{ user_data.Calories_Burned }} kcal per sesi dengan efisiensi
+                  {{ additional_stats.calories_burned_per_hour|int }} kcal/jam.
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="result-section">
-            <h4><i class="fas fa-weight"></i> Analisis Komposisi Tubuh</h4>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="stat-card">
-                  <div class="stat-card-title">Berat Badan Saat Ini</div>
-                  <div class="stat-card-value">{{ user_data.Weight }} kg</div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="stat-card">
-                  <div class="stat-card-title">Berat Badan Ideal</div>
-                  <div class="stat-card-value">
-                    {{ (22 * (user_data.Height ** 2))|round(1) }} kg
-                  </div>
-                  <div class="stat-card-desc">
-                    Berdasarkan BMI 22 (tengah rentang normal)
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="stat-card">
-                  <div class="stat-card-title">Persentase Lemak</div>
-                  <div class="stat-card-value">
-                    {{ user_data.Fat_Percentage }}%
-                  </div>
-                  <div class="stat-card-desc">
-                    {{ health_insights.fat_percentage_status }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-4">
-              <h5>Strategi Manajemen Berat Badan</h5>
-              {% if bmi_category == "Underweight" %}
-              <ul>
-                <li>
-                  Tingkatkan asupan kalori 300-500 kcal di atas kebutuhan harian
-                  Anda
-                </li>
-                <li>
-                  Fokus pada penambahan massa otot melalui latihan kekuatan
-                </li>
-                <li>
-                  Konsumsi makanan padat nutrisi dengan proporsi makronutrien
-                  yang seimbang
-                </li>
-                <li>
-                  Pantau kenaikan berat badan secara bertahap (0.5-1 kg per
-                  minggu)
-                </li>
-              </ul>
-              {% elif bmi_category == "Normal" %}
-              <ul>
-                <li>
-                  Pertahankan keseimbangan antara asupan kalori dan aktivitas
-                  fisik
-                </li>
-                <li>
-                  Lakukan latihan kekuatan untuk menjaga dan meningkatkan massa
-                  otot
-                </li>
-                <li>Fokus pada kualitas makanan daripada kuantitas</li>
-                <li>
-                  Pertahankan pola makan dan rutinitas olahraga yang konsisten
-                </li>
-              </ul>
-              {% else %}
-              <ul>
-                <li>
-                  Kurangi asupan kalori 500-750 kcal di bawah kebutuhan harian
-                  Anda
-                </li>
-                <li>Lakukan kombinasi latihan kardio dan latihan kekuatan</li>
-                <li>
-                  Pantau penurunan berat badan secara bertahap (0.5-1 kg per
-                  minggu)
-                </li>
-                <li>
-                  Fokus pada perubahan pola makan yang berkelanjutan, bukan diet
-                  sementara
-                </li>
-              </ul>
-              {% endif %}
-            </div>
-          </div>
-
-          <div class="result-section">
-            <h4><i class="fas fa-running"></i> Analisis Performa Latihan</h4>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="stat-card">
-                  <div class="stat-card-title">Efisiensi Pembakaran Kalori</div>
-                  <div class="stat-card-value">
-                    {{ additional_stats.calories_burned_per_hour|int }} kcal/jam
-                  </div>
-                  <div class="stat-card-desc">
-                    {{ health_insights.workout_efficiency }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="stat-card">
-                  <div class="stat-card-title">Kapasitas Pemulihan</div>
-                  <div class="stat-card-value">
-                    {% if 'Sangat Baik' in health_insights.recovery_assessment
-                    %} Sangat Baik {% elif 'Baik' in
-                    health_insights.recovery_assessment %} Baik {% else %} Perlu
-                    Perhatian {% endif %}
-                  </div>
-                  <div class="stat-card-desc">
-                    {{ health_insights.recovery_assessment }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-4">
-              <h5>Rekomendasi Peningkatan Performa</h5>
-              <ul>
-                <li>
-                  Variasikan intensitas latihan Anda dengan interval training
-                  untuk meningkatkan efisiensi pembakaran kalori
-                </li>
-                <li>
-                  Berikan waktu pemulihan yang cukup antar sesi latihan (24-48
-                  jam untuk kelompok otot yang sama)
-                </li>
-                <li>
-                  Konsumsi protein dalam 30 menit setelah latihan untuk
-                  mendukung pemulihan otot
-                </li>
-                <li>
-                  Tingkatkan intensitas latihan secara bertahap seiring
-                  peningkatan kebugaran Anda
-                </li>
-                <li>
-                  Pertimbangkan untuk melakukan cross-training untuk mengurangi
-                  risiko cedera dan meningkatkan performa keseluruhan
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="result-section">
-            <h4><i class="fas fa-user-check"></i> Data Pribadi</h4>
+            <h4><i class="fas fa-user-check"></i> Gambaran Data Pribadi</h4>
             <div class="row">
               <div class="col-md-6">
                 <table class="table table-hover">
@@ -1066,6 +885,16 @@
             createMacroChart();
           });
 
+        // Inisialisasi chart pada tab "Grafik Detail"
+        document
+          .getElementById("charts-tab")
+          .addEventListener("shown.bs.tab", function (e) {
+            console.log("Charts tab activated");
+            // Buat semua chart ketika tab grafik detail aktif
+            createHeartRateChart();
+            createCaloriesChart();
+          });
+
         // Buat chart pada tab yang aktif saat halaman dimuat
         const activeTab = document.querySelector(".tab-pane.active");
         if (activeTab) {
@@ -1074,7 +903,145 @@
 
           if (tabId === "recommendations") {
             createMacroChart();
+          } else if (tabId === "charts") {
+            createHeartRateChart();
+            createCaloriesChart();
           }
+        }
+
+        // Fungsi untuk membuat heart rate chart
+        function createHeartRateChart() {
+          const hrCanvas = document.getElementById("heartRateChart");
+          if (!hrCanvas) {
+            console.error("Heart rate chart canvas tidak ditemukan");
+            return;
+          }
+
+          // Hapus instance chart yang mungkin sudah ada sebelumnya
+          if (window.heartRateChart) {
+            window.heartRateChart.destroy();
+          }
+
+          console.log(
+            "Membuat heart rate chart dengan data:",
+            visualizationData.heart_rate
+          );
+
+          window.heartRateChart = new Chart(hrCanvas, {
+            type: "bar",
+            data: {
+              labels: [
+                "Istirahat",
+                "Rata-rata",
+                "Maksimum",
+                "Target Min",
+                "Target Max",
+              ],
+              datasets: [
+                {
+                  label: "Detak Jantung (BPM)",
+                  data: [
+                    visualizationData.heart_rate.resting,
+                    visualizationData.heart_rate.average,
+                    visualizationData.heart_rate.max,
+                    visualizationData.heart_rate.target_min,
+                    visualizationData.heart_rate.target_max,
+                  ],
+                  backgroundColor: [
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                  ],
+                  borderColor: [
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(255, 159, 64, 1)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Detak Jantung (BPM)",
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        // Fungsi untuk membuat calories chart
+        function createCaloriesChart() {
+          const caloriesCanvas = document.getElementById("caloriesChart");
+          if (!caloriesCanvas) {
+            console.error("Calories chart canvas tidak ditemukan");
+            return;
+          }
+
+          // Hapus instance chart yang mungkin sudah ada sebelumnya
+          if (window.caloriesChart) {
+            window.caloriesChart.destroy();
+          }
+
+          console.log(
+            "Membuat calories chart dengan data:",
+            visualizationData.calories
+          );
+
+          window.caloriesChart = new Chart(caloriesCanvas, {
+            type: "doughnut",
+            data: {
+              labels: ["Kalori Terbakar", "Kebutuhan Harian"],
+              datasets: [
+                {
+                  data: [
+                    visualizationData.calories.burned,
+                    visualizationData.calories.daily_need,
+                  ],
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.7)",
+                    "rgba(54, 162, 235, 0.7)",
+                  ],
+                  borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "bottom",
+                },
+                title: {
+                  display: true,
+                  text: "Perbandingan Kalori (kcal)",
+                },
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      let label = context.label || "";
+                      let value = context.raw;
+                      return `${label}: ${value} kcal`;
+                    },
+                  },
+                },
+              },
+            },
+          });
         }
 
         // Fungsi untuk membuat macro chart

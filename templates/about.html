@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tentang Aplikasi - Health Monitor</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #4facfe;
+        --secondary-color: #00f2fe;
+        --accent-color: #0062cc;
+        --dark-color: #333;
+        --light-color: #f8f9fa;
+        --success-color: #2ecc71;
+        --warning-color: #f39c12;
+        --danger-color: #e74c3c;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: #fff;
+        min-height: 100vh;
+        padding: 30px 0;
+      }
+      .container {
+        max-width: 1000px;
+        background-color: #fff;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        color: var(--dark-color);
+        margin-bottom: 30px;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .container h1 {
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 700;
+        font-size: 2.5rem;
+      }
+      .btn-primary {
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        border: none;
+        padding: 14px 30px;
+        font-size: 1.1rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(
+          to right,
+          var(--secondary-color),
+          var(--primary-color)
+        );
+        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+        transform: translateY(-3px);
+      }
+      .about-section {
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #f1f1f1;
+      }
+      .about-section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .about-section h2 {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f1f1;
+        font-weight: 600;
+        font-size: 1.6rem;
+      }
+      .about-section h3 {
+        font-size: 1.3rem;
+        color: var(--dark-color);
+        margin-top: 20px;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+      .about-icon {
+        font-size: 50px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        display: block;
+        text-align: center;
+      }
+      .card {
+        border-radius: 15px;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .card-header {
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        font-weight: 600;
+        padding: 15px 20px;
+        border: none;
+      }
+      .card-body {
+        padding: 20px;
+      }
+      .footer {
+        text-align: center;
+        color: white;
+        margin-top: 20px;
+        font-size: 0.9rem;
+      }
+      .footer a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .footer a:hover {
+        text-decoration: underline;
+      }
+      .team-member {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .team-member img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 15px;
+        border: 3px solid var(--primary-color);
+      }
+      .team-member h4 {
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+      .team-member p {
+        color: #666;
+        font-size: 0.9rem;
+      }
+      .feature-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+      .feature-icon {
+        flex-shrink: 0;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(
+          to right,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        border-radius: 12px;
+        margin-right: 15px;
+        font-size: 20px;
+      }
+      .feature-text {
+        flex-grow: 1;
+      }
+      .feature-text h4 {
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+      .bmi-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-bottom: 20px;
+      }
+      .bmi-table th,
+      .bmi-table td {
+        padding: 12px 15px;
+        text-align: center;
+        border: 1px solid #f1f1f1;
+      }
+      .bmi-table th {
+        background-color: rgba(79, 172, 254, 0.1);
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      .bmi-table tr:nth-child(even) {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+      .bmi-underweight {
+        background-color: rgba(52, 152, 219, 0.1);
+      }
+      .bmi-normal {
+        background-color: rgba(46, 204, 113, 0.1);
+      }
+      .bmi-overweight {
+        background-color: rgba(243, 156, 18, 0.1);
+      }
+      .bmi-obese {
+        background-color: rgba(231, 76, 60, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><i class="fas fa-info-circle"></i> Tentang Health Monitor</h1>
+
+      <div class="about-section">
+        <i class="fas fa-heartbeat about-icon"></i>
+        <h2>Aplikasi Health Monitor</h2>
+        <p>
+          Health Monitor adalah aplikasi prediksi BMI berbasis machine learning
+          yang dirancang untuk memberikan wawasan kesehatan yang komprehensif
+          berdasarkan data fisik dan aktivitas latihan pengguna. Aplikasi ini
+          tidak hanya menghitung BMI, tetapi juga memberikan rekomendasi
+          spesifik untuk meningkatkan kesehatan secara keseluruhan.
+        </p>
+
+        <h3>Fitur Utama</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-calculator"></i>
+              </div>
+              <div class="feature-text">
+                <h4>Prediksi BMI Akurat</h4>
+                <p>
+                  Menggunakan model machine learning untuk prediksi BMI yang
+                  lebih akurat berdasarkan berbagai variabel input.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="feature-text">
+                <h4>Analisis Data Visual</h4>
+                <p>
+                  Menyajikan data kesehatan dalam bentuk grafik dan visualisasi
+                  untuk pemahaman yang lebih baik.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-dumbbell"></i>
+              </div>
+              <div class="feature-text">
+                <h4>Rekomendasi Latihan</h4>
+                <p>
+                  Memberikan rekomendasi latihan yang dipersonalisasi
+                  berdasarkan jenis latihan dan tingkat pengalaman.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-apple-alt"></i>
+              </div>
+              <div class="feature-text">
+                <h4>Saran Nutrisi</h4>
+                <p>
+                  Menyediakan saran nutrisi berdasarkan kebutuhan kalori harian
+                  dan kategori BMI.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-section">
+        <h2>Apa itu BMI (Body Mass Index)?</h2>
+        <p>
+          Body Mass Index (BMI) atau Indeks Massa Tubuh (IMT) adalah ukuran yang
+          digunakan untuk menilai apakah seseorang memiliki berat badan yang
+          sehat berdasarkan tinggi dan berat badannya. BMI dihitung dengan
+          membagi berat badan (dalam kilogram) dengan kuadrat tinggi badan
+          (dalam meter).
+        </p>
+        <div class="card mb-4">
+          <div class="card-header">Rumus BMI</div>
+          <div class="card-body">
+            <strong>BMI = Berat Badan (kg) / (Tinggi Badan (m))²</strong>
+          </div>
+        </div>
+
+        <h3>Kategori BMI</h3>
+        <table class="bmi-table">
+          <thead>
+            <tr>
+              <th>Kategori</th>
+              <th>Rentang BMI</th>
+              <th>Risiko Kesehatan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bmi-underweight">
+              <td><strong>Underweight (Kekurangan Berat Badan)</strong></td>
+              <td>&lt; 18.5</td>
+              <td>
+                Peningkatan risiko masalah pencernaan, kelemahan tulang, dan
+                sistem kekebalan tubuh yang lemah.
+              </td>
+            </tr>
+            <tr class="bmi-normal">
+              <td><strong>Normal (Berat Badan Normal)</strong></td>
+              <td>18.5 - 24.9</td>
+              <td>Risiko kesehatan rendah. Kondisi berat badan yang ideal.</td>
+            </tr>
+            <tr class="bmi-overweight">
+              <td><strong>Overweight (Kelebihan Berat Badan)</strong></td>
+              <td>25 - 29.9</td>
+              <td>
+                Peningkatan risiko penyakit jantung, tekanan darah tinggi, dan
+                diabetes tipe 2.
+              </td>
+            </tr>
+            <tr class="bmi-obese">
+              <td><strong>Obese (Obesitas)</strong></td>
+              <td>&ge; 30</td>
+              <td>
+                Risiko tinggi untuk penyakit jantung, tekanan darah tinggi,
+                diabetes tipe 2, masalah pernapasan, dan beberapa jenis kanker.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Keterbatasan BMI</h3>
+        <p>Penting untuk diingat bahwa BMI memiliki beberapa keterbatasan:</p>
+        <ul>
+          <li>Tidak membedakan antara massa otot dan lemak</li>
+          <li>Tidak memperhitungkan distribusi lemak dalam tubuh</li>
+          <li>
+            Mungkin kurang akurat untuk atlet, orang tua, dan wanita hamil
+          </li>
+          <li>
+            Tidak mempertimbangkan faktor kesehatan lainnya seperti kolesterol
+            dan tekanan darah
+          </li>
+        </ul>
+        <p>
+          Health Monitor mengatasi keterbatasan ini dengan memperhitungkan
+          variabel tambahan seperti persentase lemak, detak jantung, dan
+          aktivitas fisik untuk memberikan gambaran kesehatan yang lebih
+          komprehensif.
+        </p>
+      </div>
+
+      <div class="about-section">
+        <h2>Teknologi yang Digunakan</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">Backend</div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li><i class="fab fa-python me-2"></i> Python</li>
+                  <li><i class="fas fa-server me-2"></i> Flask</li>
+                  <li><i class="fas fa-brain me-2"></i> Scikit-learn</li>
+                  <li>
+                    <i class="fas fa-database me-2"></i> Pickle (Model Storage)
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">Frontend</div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li><i class="fab fa-html5 me-2"></i> HTML5</li>
+                  <li><i class="fab fa-css3-alt me-2"></i> CSS3</li>
+                  <li><i class="fab fa-js me-2"></i> JavaScript</li>
+                  <li><i class="fab fa-bootstrap me-2"></i> Bootstrap 5</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">Visualisasi</div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li><i class="fas fa-chart-bar me-2"></i> Chart.js</li>
+                  <li><i class="fas fa-palette me-2"></i> Font Awesome</li>
+                  <li><i class="fas fa-table me-2"></i> Data Tables</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="{{ url_for('home') }}" class="btn btn-primary">
+          <i class="fas fa-arrow-left me-2"></i> Kembali ke Halaman Utama
+        </a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        &copy; 2023 Health Monitor | Aplikasi Prediksi BMI Berbasis Machine
+        Learning
+      </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
